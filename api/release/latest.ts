@@ -1,11 +1,10 @@
-// api/release.ts
 import {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
   Context,
 } from "https://deno.land/x/lambda@1.2.2/mod.ts";
 
-import { Version } from "../common.ts";
+import { Version } from "../../common.ts";
 
 interface GithubReleaseAsset {
   id: number;
