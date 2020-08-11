@@ -1,0 +1,2 @@
+run:
+		vercel dev
