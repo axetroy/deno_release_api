@@ -1,20 +1,15 @@
-// api/release.ts
-import {
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult,
-  Context,
-} from "https://deno.land/x/lambda@1.3.1/mod.ts";
+// URL: /api/releases
+import { ServerRequest } from "https://deno.land/std@0.66.0/http/server.ts";
 import { getAllVersions } from "../common.ts";
 
-export async function handler(
-  event: APIGatewayProxyEvent,
-  context: Context
-): Promise<APIGatewayProxyResult> {
-  return {
-    statusCode: 200,
+export async function handler(req: ServerRequest) {
+  const headers = new Headers();
+
+  headers.append("content-type", "application/json");
+
+  await req.respond({
+    status: 200,
     body: JSON.stringify(await getAllVersions()),
-    headers: {
-      "content-type": "application/json",
-    },
-  };
+    headers,
+  });
 }

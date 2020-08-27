@@ -1,10 +1,10 @@
 {
   "functions": {
     "api/**/*.{j,t}s": {
-      "runtime": "now-deno@0.4.0"
+      "runtime": "vercel-deno@0.7.0"
     }
   },
   "env": {
-    "DENO_VERSION": "1.3.0"
+    "DENO_VERSION": "1.3.1"
   }
 }
