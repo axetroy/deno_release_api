@@ -27,12 +27,12 @@ interface Tag {
 
 export async function getAllVersions(): Promise<string[]> {
   const res = await fetch(
-    "https://api.github.com/repos/denoland/deno/git/refs/tags"
+    "https://api.github.com/repos/denoland/deno/git/refs/tags",
   );
 
   const tags: Tag[] = await res.json();
 
   return tags
     .filter((v) => /^refs\/tags\/v?\d+\.\d+\.\d+/.test(v.ref))
-    .map((v) => v.ref.replace(/^refs\/tags/, ""));
+    .map((v) => v.ref.replace(/^refs\/tags\//, ""));
 }
