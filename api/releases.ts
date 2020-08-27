@@ -3,7 +3,8 @@ import {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
   Context,
-} from "https://deno.land/x/lambda@1.2.2/mod.ts";
+} from "https://deno.land/x/lambda@1.3.1/mod.ts";
+import { getAllVersions } from "../common.ts";
 
 export async function handler(
   event: APIGatewayProxyEvent,
@@ -11,9 +12,9 @@ export async function handler(
 ): Promise<APIGatewayProxyResult> {
   return {
     statusCode: 200,
-    body: `Welcome to deno release ${Deno.version.deno} 🦕`,
+    body: JSON.stringify(await getAllVersions()),
     headers: {
-      "content-type": "text/html; charset=utf-8",
+      "content-type": "application/json",
     },
   };
 }

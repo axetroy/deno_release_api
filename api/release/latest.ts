@@ -2,69 +2,23 @@ import {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
   Context,
-} from "https://deno.land/x/lambda@1.2.2/mod.ts";
+} from "https://deno.land/x/lambda@1.3.1/mod.ts";
 
-import { Version } from "../../common.ts";
-
-interface GithubReleaseAsset {
-  id: number;
-  node_id: string;
-  name: string;
-  url: string;
-  browser_download_url: string;
-  download_count: number;
-  size: number;
-  created_at: string;
-  updated_at: string;
-}
-
-interface GithubRelease {
-  id: number;
-  node_id: string;
-  tag_name: string;
-  url: string;
-  assets_url: string;
-  upload_url: string;
-  html_url: string;
-  target_commitish: string;
-  name: string;
-  draft: boolean;
-  assets: GithubReleaseAsset[];
-  published_at: string;
-  created_at: string;
-}
+import { getAllVersions } from "../../common.ts";
 
 export async function handler(
   event: APIGatewayProxyEvent,
   context: Context
 ): Promise<APIGatewayProxyResult> {
   const res = await fetch(
-    "https://api.github.com/repos/denoland/deno/releases/latest"
+    "https://api.github.com/repos/denoland/deno/git/refs/tags"
   );
 
-  const release: GithubRelease = await res.json();
-
-  const version: Version = {
-    version: release.tag_name,
-    published_at: release.published_at,
-    assets: release.assets.map((v) => {
-      const matcher = /^deno-([^-]+)-(.+)\.\w+$/.exec(v.name) || [];
-
-      const [_, arch, platform] = matcher;
-
-      return {
-        filename: v.name,
-        platform: platform,
-        arch: arch,
-        download_url: v.browser_download_url,
-        size: v.size,
-      };
-    }),
-  };
+  const versions = await getAllVersions();
 
   return {
     statusCode: 200,
-    body: JSON.stringify(version),
+    body: versions[0],
     headers: {
       "content-type": "application/json",
     },
