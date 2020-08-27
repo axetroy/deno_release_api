@@ -10,10 +10,6 @@ export async function handler(
   event: APIGatewayProxyEvent,
   context: Context
 ): Promise<APIGatewayProxyResult> {
-  const res = await fetch(
-    "https://api.github.com/repos/denoland/deno/git/refs/tags"
-  );
-
   const versions = await getAllVersions();
 
   return {
