@@ -5,7 +5,7 @@ import { fromStreamReader } from "https://deno.land/std@v0.66.0/io/streams.ts";
 type Platform = "darwin" | "linux" | "windows";
 
 export default async function handler(req: ServerRequest) {
-  const u = new URL(req.url);
+  const u = new URL("https://example.com" + req.url);
   const version = u.searchParams.get("version");
   const platform = u.searchParams.get("platform") as Platform;
 
