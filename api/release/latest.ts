@@ -8,6 +8,6 @@ export default async function handler(req: ServerRequest) {
 
   await req.respond({
     status: 200,
-    body: versions[0],
+    body: versions[versions.length - 1],
   });
 }
