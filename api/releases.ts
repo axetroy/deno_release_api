@@ -3,13 +3,11 @@ import { ServerRequest } from "https://deno.land/std@0.66.0/http/server.ts";
 import { getAllVersions } from "../common.ts";
 
 export default async function handler(req: ServerRequest) {
-  const headers = new Headers();
-
-  headers.append("content-type", "application/json");
+  const { releases, headers } = await getAllVersions();
 
   await req.respond({
     status: 200,
-    body: JSON.stringify(await getAllVersions()),
+    body: JSON.stringify(releases),
     headers,
   });
 }

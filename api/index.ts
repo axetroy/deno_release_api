@@ -11,7 +11,6 @@ export default async function handler(req: ServerRequest) {
     body: JSON.stringify({
       "/api/releases": "get all deno release",
       "/api/release/latest": "get latest deno release",
-      "/api/release/download": "download release file",
     }),
     headers,
   });

@@ -43,9 +43,14 @@ interface Release {
 // To be conservative here, we cache the time in 5 seconds
 const cache = Cache.create<Release[]>(1000 * 5);
 
-export async function getAllVersions(): Promise<Release[]> {
+export async function getAllVersions(): Promise<
+  { releases: Release[]; headers: Headers }
+> {
   if (cache.get()) {
-    return cache.get() as Release[];
+    const headers = new Headers();
+    headers.append("x-deno-cache", "1");
+    headers.append("content-type", "application/json");
+    return { releases: cache.get() as Release[], headers };
   }
 
   const res = await fetch(
@@ -71,7 +76,7 @@ export async function getAllVersions(): Promise<Release[]> {
 
   cache.set(releases);
 
-  return releases;
+  return { releases, headers: res.headers };
 }
 
 function getArch(version: string, arch: typeof Deno.build.arch): string {
