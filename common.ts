@@ -1,3 +1,5 @@
+import { Cache } from "./cache.ts";
+
 export interface Version {
   version: string;
   published_at: string;
@@ -36,14 +38,20 @@ interface Release {
   downloadURL: DownloadInfo;
 }
 
+const cache = Cache.create<Release[]>(1000 * 5);
+
 export async function getAllVersions(): Promise<Release[]> {
+  if (cache.get()) {
+    return cache.get() as Release[];
+  }
+
   const res = await fetch(
     "https://api.github.com/repos/denoland/deno/git/refs/tags",
   );
 
   const tags: Tag[] = await res.json();
 
-  return tags
+  const releases = tags
     .filter((v) => /^refs\/tags\/v?\d+\.\d+\.\d+/.test(v.ref))
     .map((v) => {
       const version = v.ref.replace(/^refs\/tags\//, "");
@@ -57,6 +65,10 @@ export async function getAllVersions(): Promise<Release[]> {
         },
       };
     });
+
+  cache.set(releases);
+
+  return releases;
 }
 
 function getArch(version: string, arch: typeof Deno.build.arch): string {
