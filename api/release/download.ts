@@ -1,5 +1,6 @@
 // URL: /api/release/download
 import { ServerRequest } from "https://deno.land/std@0.66.0/http/server.ts";
+import { fromStreamReader } from "https://deno.land/std@v0.66.0/io/streams.ts";
 
 type Platform = "darwin" | "linux" | "windows";
 
@@ -25,27 +26,21 @@ export default async function handler(req: ServerRequest) {
   const url =
     `https://github.com/denoland/deno/releases/download/${version}/deno-x86_64-${os}.zip`;
 
-  const response = await fetch(url);
+  const res = await fetch(url);
 
-  response.body?.getReader();
-
-  if (response.body) {
+  if (res.body) {
     await req.respond({
-      status: response.status,
-      headers: response.headers,
+      status: res.status,
+      headers: res.headers,
     });
 
-    const reader = response.body.getReader();
+    const reader = fromStreamReader(res.body.getReader());
 
-    const result = await reader.read();
-
-    if (result.done) {
-    } else {
-      await req.w.write(result.value);
-    }
+    await Deno.copy(reader, req.w);
   } else {
     await req.respond({
-      status: response.status,
+      status: res.status,
+      headers: res.headers,
     });
   }
 }
