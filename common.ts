@@ -38,6 +38,9 @@ interface Release {
   downloadURL: DownloadInfo;
 }
 
+// Due to Github API limit, only 5000 requests per hour
+// So on average, 5000/3600 = 1.388888889 requests can be sent per second
+// To be conservative here, we cache the time in 5 seconds
 const cache = Cache.create<Release[]>(1000 * 5);
 
 export async function getAllVersions(): Promise<Release[]> {
