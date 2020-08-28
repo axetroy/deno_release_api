@@ -2,9 +2,6 @@
   "functions": {
     "api/**/*.{j,t}s": {
       "runtime": "vercel-deno@0.7.0"
-    },
-    "index.ts": {
-      "runtime": "vercel-deno@0.7.0"
     }
   },
   "routes": [{ "src": "/", "dest": "/api/index.ts" }],

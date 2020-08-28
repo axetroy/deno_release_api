@@ -16,7 +16,7 @@ get latest version for Deno
 $ curl https://deno-release.now.sh/api/release/latest
 ```
 
-#### [GET] /api/release/download?version=v1.3.0&platform=Linux
+#### [GET] /api/release/download?version=v1.3.0&platform=linux
 
 download deno
 
