@@ -1,4 +1,4 @@
-// URL: /api/release/latest
+// URL: /api/release/download
 import { ServerRequest } from "https://deno.land/std@0.66.0/http/server.ts";
 
 type Platform = "darwin" | "linux" | "windows";

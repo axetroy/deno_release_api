@@ -1,4 +1,4 @@
-// URL: /api/releases
+// URL: /api
 import { ServerRequest } from "https://deno.land/std@0.66.0/http/server.ts";
 
 export default async function handler(req: ServerRequest) {
